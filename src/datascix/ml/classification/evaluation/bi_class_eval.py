@@ -1,4 +1,4 @@
-from src.ml.classification.evaluation.eval_base import EvalBase
+from src.datascix.ml.classification.evaluation.eval_base import EvalBase
 
 class BiClassEval(EvalBase):
     def __init__(self, tp:int, tn:int, fp:int, fn:int):
