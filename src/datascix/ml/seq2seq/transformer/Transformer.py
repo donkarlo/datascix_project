@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 
-class TransformerSequencePredictor(nn.Module):
+class Transformer(nn.Module):
     def __init__(self, input_dim, d_model, nhead, num_layers, dim_feedforward=2048, dropout=0.1, max_len=500):
         super().__init__()
         self.input_dim = input_dim
