@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import numpy as np
 from utilityx.conf.conf import Conf
+from utilityx.pythonx.data_type.float_seqx import Seqx
+
 from datascix.ml.seq2seq.trainer import Trainer
 
 
@@ -15,5 +17,5 @@ class Predictor(ABC):
         self._prd_seq = None
 
     @abstractmethod
-    def get_prd_seq(self)->:
+    def get_prd_seq(self)->Seqx:
         pass
