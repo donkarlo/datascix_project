@@ -4,7 +4,7 @@ from utilityx.pythonx.data_type.float_seqx import Seqx
 class Eval:
     def __init__(self, prd_seq:Seqx, real_future_seq):
         '''
-
+        For results evaluation
         Args:
             prd_seq:
             real_future_seq:
