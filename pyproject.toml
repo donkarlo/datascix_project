@@ -1,3 +1,6 @@
+[project.scripts]
+datascix = "datascix.__main__:main"
+
 [build-system]
 requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
@@ -5,9 +8,6 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "datascix"
 version = "1.0.0"
-
-[project.scripts]
-boot = "datascix.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
