@@ -1,0 +1,2 @@
+class TestFromStorageToMemory():
+    pass

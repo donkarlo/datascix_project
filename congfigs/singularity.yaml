@@ -1,0 +1,11 @@
+singularity:
+  srs:
+    id: "srs" #single robot system
+  mrs:
+    id: "mrs" #multi robot system
+    architecture:
+      - "leader_follower"
+      - "swarm"
+    homogeneity:
+      - "homogeneous"
+      - "heterogeneous"
