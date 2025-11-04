@@ -36,7 +36,7 @@ class DBSCANClusterer:
         plt.tight_layout()
         plt.show()
 
-# Example usage
+# PublisherExample usage
 if __name__ == "__main__":
     # Generate synthetic 2D data
     X, _ = make_blobs(n_samples=300, centers=[(-5, -5), (0, 0), (5, 5)],
