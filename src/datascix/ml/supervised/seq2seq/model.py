@@ -1,6 +1,6 @@
 from abc import abstractmethod,ABC
 from utilityx.pythonx.data_type.seqx import Seqx
-from datascix.ml.seq2seq.training_conf import TrainingConf
+from datascix.ml.supervised.seq2seq.training_conf import TrainingConf
 
 
 class Model(ABC):
