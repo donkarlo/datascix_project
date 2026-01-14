@@ -1,0 +1,2 @@
+class RootMeanSquaredError:
+    pass

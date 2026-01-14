@@ -49,5 +49,5 @@ package-dir = { "" = "src" }     # explicit src-layout
 where = ["src"]
 
 [tool.pytest.ini_options]
-addopts = "-ra --tb=short --strict-markers"
+addopts = "-ra --tb=short --strict-markers -s"
 testpaths = ["tests"]

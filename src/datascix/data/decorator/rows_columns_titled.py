@@ -1,0 +1,2 @@
+class RowsColumnsTitled:
+    pass
