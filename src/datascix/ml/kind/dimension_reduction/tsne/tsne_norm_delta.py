@@ -16,7 +16,7 @@ class TsneNormDelta:
 
     def __init__(self) -> None:
         path = Path(
-            "/data/experiements/oldest/robots/uav1/mind/memory/long_term/explicit/episodic/normal/lidar_scan_ranges_sliced_from_1_to_300000/lidar_scan_ranges_sliced_from_1_to_300000.pkl"
+            "/data_set/experiements/oldest/robots/uav1/mind/memory/long_term/explicit/episodic/normal/lidar_scan_ranges_sliced_from_1_to_300000/lidar_scan_ranges_sliced_from_1_to_300000.pkl"
         )
 
         os_file = File.init_from_path(path)
@@ -36,7 +36,7 @@ class TsneNormDelta:
 
         lidar_vectors = np.array(lidar_vectors, dtype=np.float64)
 
-        # ----- Clean data -----
+        # ----- Clean data_set -----
         max_range = 15.0
         lidar_vectors[~np.isfinite(lidar_vectors)] = max_range
         lidar_vectors[lidar_vectors > max_range] = max_range
@@ -78,7 +78,7 @@ class TsneNormDelta:
 
         print("t-SNE embedding shape:", embedding.shape)
 
-        # ----- Plot -----
+        # ----- View -----
         plt.figure()
         plt.scatter(embedding[:, 0], embedding[:, 1], s=2, c=norm_delta, cmap="viridis")
         plt.xlabel("t-SNE 1")

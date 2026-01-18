@@ -75,7 +75,7 @@ class LidarTemporalAutoencoder:
 
         self._input_dim = self._window_vectors.shape[1]
 
-        # ----- Set device and model -----
+        # ----- Set device and transformer_model -----
         device_name = "cuda" if torch.cuda.is_available() else "cpu"
         self._device = torch.device(device_name)
 

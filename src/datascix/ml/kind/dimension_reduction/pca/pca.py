@@ -8,11 +8,11 @@ from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 
 class Pca:
     """
-    Tries to preserve teh variance of the whole data
+    Tries to preserve teh variance of the whole data_set
     """
     def __init__(self):
         path = Path(
-            "/data/experiements/oldest/robots/uav1/mind/memory/long_term/explicit/episodic/normal/lidar_scan_ranges_sliced_from_1_to_300000/lidar_scan_ranges_sliced_from_1_to_300000.pkl")
+            "/data_set/experiements/oldest/robots/uav1/mind/memory/long_term/explicit/episodic/normal/lidar_scan_ranges_sliced_from_1_to_300000/lidar_scan_ranges_sliced_from_1_to_300000.pkl")
 
         os_file = File.init_from_path(path)
         pickle = Pkl(os_file, False)
@@ -30,7 +30,7 @@ class Pca:
 
         scan_vecs = np.array(scan_vecs, dtype=np.float64)
 
-        # ----- Clean LiDAR data -----
+        # ----- Clean LiDAR data_set -----
         max_range = 15.0
 
         # Replace inf / -inf / NaN with max_range

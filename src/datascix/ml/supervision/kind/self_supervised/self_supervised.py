@@ -1,2 +1,0 @@
-class SelfSupervised:
-    pass

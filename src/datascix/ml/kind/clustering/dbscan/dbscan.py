@@ -38,7 +38,7 @@ class DBSCANClusterer:
 
 # PublisherExample usage
 if __name__ == "__main__":
-    # Generate synthetic 2D data
+    # Generate synthetic 2D data_set
     X, _ = make_blobs(n_samples=300, centers=[(-5, -5), (0, 0), (5, 5)],
                       cluster_std=0.8, random_state=42)
 

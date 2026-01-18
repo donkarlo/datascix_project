@@ -1,2 +1,0 @@
-class Kinds:
-    pass
