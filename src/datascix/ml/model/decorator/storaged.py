@@ -1,5 +1,5 @@
-from datascix.ml.kind.sequence_to_sequence.kind.transformer.decorator.decorator import Decorator
-from datascix.ml.kind.sequence_to_sequence.kind.transformer.interface import Interface
+from datascix.ml.model.application.time_series_forcating.decorator.decorator import Decorator
+from datascix.ml.model.application.time_series_forcating.kind.transformer.interface import Interface
 
 
 class Storaged(Decorator):

@@ -3,7 +3,7 @@ from typing import Any
 
 class Data:
     """
-    Here data_set is only numerical numpy array so it is different than data_set in utilix.data_set
+    Here pair_set is only numerical numpy array so it is different than pair_set in utilix.pair_set
     """
     def __init__(self, data:Any):
         self._np_array = None
