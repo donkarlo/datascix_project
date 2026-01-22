@@ -1,2 +1,10 @@
+from utilix.data.kind.dic.dic import Dic
+
+
 class Parameters:
-    pass
+    """
+    Paramaters in a model are the variables in the model which should be learned
+    """
+
+    def __init__(self, parameter_values: Dic):
+        self._parameter_values = parameter_values

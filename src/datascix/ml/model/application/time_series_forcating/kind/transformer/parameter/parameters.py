@@ -1,2 +1,0 @@
-class Parameters:
-    pass

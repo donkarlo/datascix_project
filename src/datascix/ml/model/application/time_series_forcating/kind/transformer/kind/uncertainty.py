@@ -10,14 +10,14 @@ from utilix.os.file_system.path.file import File as FilePath
 
 
 @tf.keras.utils.register_keras_serializable(package="datascix")
-class TransformerWithUncertainty(TfModel):
+class Uncertainty(TfModel):
     """
-    Minimal seq2seq Transformer with heteroscedastic Gaussian output.
+    Minimal seq2seq TransformerDraft with heteroscedastic Gaussian output.
 
     Notes:
     - Model output is a single tensor: concat([mean, logvar], axis=-1).
       This avoids Keras multi-output loss mapping issues.
-    - Training uses teacher forcing.
+    - Architecture uses teacher forcing.
     - Inference uses autoregressive decoding and feeds predicted mean.
     """
 
@@ -114,7 +114,7 @@ class TransformerWithUncertainty(TfModel):
         return config
 
     @classmethod
-    def from_config(cls, config: dict) -> "TransformerWithUncertainty":
+    def from_config(cls, config: dict) -> "Uncertainty":
         return cls(**config)
 
     def _add_positional_embedding(self, projected: tf.Tensor, position_embedding: TfLayers.Embedding) -> tf.Tensor:
@@ -298,12 +298,12 @@ class TransformerWithUncertainty(TfModel):
         self.save(save_path)
 
     @staticmethod
-    def load_transformer_model(save_path: str) -> "TransformerWithUncertainty":
+    def load_transformer_model(save_path: str) -> "Uncertainty":
         loaded_model = tf.keras.models.load_model(
             save_path,
             custom_objects={
-                "TransformerWithUncertainty": TransformerWithUncertainty,
-                "gaussian_nll": TransformerWithUncertainty.gaussian_nll,
+                "Uncertainty": Uncertainty,
+                "gaussian_nll": Uncertainty.gaussian_nll,
             },
             compile=False,
         )
@@ -326,7 +326,7 @@ if __name__ == "__main__":
     input_array = sliding_windows_generator.get_inputs()
     output_array = sliding_windows_generator.get_outputs()
 
-    transformer_model = TransformerWithUncertainty(
+    transformer_model = Uncertainty(
         model_dimension=128,
         number_of_attention_heads=8,
         feed_forward_dimension=256,
@@ -341,8 +341,8 @@ if __name__ == "__main__":
 
     transformer_model.save_model("transformer_seq2seq_uncertainty_saved_model.keras")
 
-    reloaded_model = TransformerWithUncertainty.load_transformer_model(
-        "transformer_seq2seq_uncertainty_saved_model.keras")
+    reloaded_model = Uncertainty.load_transformer_model(
+        "../transformer_seq2seq_uncertainty_saved_model.keras")
 
     predicted_mean, predicted_var = reloaded_model.predict_autoregressive(input_array[0:100])
     print("predicted_mean shape:", predicted_mean)

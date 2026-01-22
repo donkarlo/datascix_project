@@ -1,11 +1,11 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers as TfLayers, Model as TfModel
-
 from datascix.ml.model.application.time_series_forcating.time_series_forcasting import TimeSeriesForcasting
+from utilix.oop.inheritance.overriding.override_from import override_from
 
 
-class Transformer(TfModel, TimeSeriesForcasting):
+class TransformerDraft(TfModel, TimeSeriesForcasting):
     def __init__(
             self,
             model_dimension: int,
@@ -156,6 +156,7 @@ class Transformer(TfModel, TimeSeriesForcasting):
         decoder_output = self.output_projection(decoder_hidden)  # (B, T_out, F_out)
         return decoder_output
 
+    @override_from(TfModel, False, False)
     def call(self, inputs, training: bool = False) -> tf.Tensor:
         """
         inputs must be a tuple:
@@ -272,17 +273,10 @@ class Transformer(TfModel, TimeSeriesForcasting):
     def save_model(self, save_path: str) -> None:
         self.save(save_path)
 
-    def load_transformer_model(self, save_path: str) -> "Transformer":
+    def load_transformer_model(self, save_path: str) -> "TransformerDraft":
         loaded_model = tf.keras.models.load_model(
             save_path,
-            custom_objects={"Transformer": Transformer},
-        )
-        return loaded_model
-
-    def load_transformer_model(self, save_path: str) -> "Transformer":
-        loaded_model = tf.keras.models.load_model(
-            save_path,
-            custom_objects={"Transformer": Transformer},
+            custom_objects={"TransformerDraft": TransformerDraft},
         )
         return loaded_model
 
@@ -292,5 +286,5 @@ class Transformer(TfModel, TimeSeriesForcasting):
     def load(self) -> None:
         self.load_transformer_model("transformer_sequence_to_sequence_saved_model.keras")
 
-    def get_forcast(self, input_set: np.ndarray) -> np.ndarray:
-        return self.predict_autoregressive(input_set)
+    def get_forcast(self, time_serie_to_forcast: np.ndarray) -> np.ndarray:
+        return self.predict_autoregressive(time_serie_to_forcast)
