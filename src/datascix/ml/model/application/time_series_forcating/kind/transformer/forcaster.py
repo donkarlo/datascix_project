@@ -28,7 +28,7 @@ class Forcaster(TfModel):
 
         per_head_dim = model_dimension // num_heads
 
-        # IMPORTANT: keep layer structure compatible with Draft
+        # MUST match Trainer model structure exactly
         self.encoder_input_projection = TfLayers.Dense(model_dimension)
         self.decoder_input_projection = TfLayers.Dense(model_dimension)
         self.output_projection = TfLayers.Dense(self._output_feature_count)
@@ -70,38 +70,26 @@ class Forcaster(TfModel):
         self.decoder_layer_norm_after_cross_attention = TfLayers.LayerNormalization(epsilon=1e-6)
         self.decoder_layer_norm_after_feed_forward = TfLayers.LayerNormalization(epsilon=1e-6)
 
-    # ----- normalization: safe by default -----
-    def _normalize_input_np(self, x: np.ndarray) -> np.ndarray:
-        x = np.asarray(x, dtype=np.float32)
+        # If we have learned weights, build & load them now
+        self._maybe_load_weights()
 
-        if self._learned_parameters is None or not self._learned_parameters.has_input_normalization():
-            return x
+    def _maybe_load_weights(self) -> None:
+        if self._learned_parameters is None:
+            return
+        if not self._learned_parameters.has_model_weights():
+            return
+        if not self._learned_parameters.has_input_feature_count():
+            raise ValueError("learned_parameters must contain input_feature_count to load weights.")
 
-        mean = self._learned_parameters.get_input_mean()
-        std = self._learned_parameters.get_input_std()
+        f_in = self._learned_parameters.get_input_feature_count()
 
-        if mean.shape != (x.shape[2],) or std.shape != (x.shape[2],):
-            raise ValueError(f"Input normalization shape mismatch: mean/std must be ({x.shape[2]},)")
+        dummy_b = 1
+        dummy_t_in = 1
+        dummy_encoder = tf.zeros((dummy_b, dummy_t_in, f_in), dtype=tf.float32)
+        dummy_decoder = tf.zeros((dummy_b, 1, self._output_feature_count), dtype=tf.float32)
 
-        eps = np.float32(1e-8)
-        std = np.maximum(std, eps)
-        return (x - mean) / std
-
-    def _denormalize_target_np(self, y: np.ndarray) -> np.ndarray:
-        y = np.asarray(y, dtype=np.float32)
-
-        if self._learned_parameters is None or not self._learned_parameters.has_target_normalization():
-            return y
-
-        mean = self._learned_parameters.get_target_mean()
-        std = self._learned_parameters.get_target_std()
-
-        if mean.shape != (y.shape[2],) or std.shape != (y.shape[2],):
-            raise ValueError(f"Target normalization shape mismatch: mean/std must be ({y.shape[2]},)")
-
-        eps = np.float32(1e-8)
-        std = np.maximum(std, eps)
-        return y * std + mean
+        _ = self((dummy_encoder, dummy_decoder), training=False)
+        self.set_weights(self._learned_parameters.get_model_weights())
 
     # ----- core -----
     def _add_positional_embedding(self, projected: tf.Tensor, embedding: TfLayers.Embedding) -> tf.Tensor:
@@ -152,8 +140,7 @@ class Forcaster(TfModel):
         if time_serie_to_forcast.ndim != 3:
             raise ValueError("time_serie_to_forcast must have shape (B, T_in, F_in).")
 
-        x = self._normalize_input_np(time_serie_to_forcast)
-        encoder_input = tf.convert_to_tensor(x, dtype=tf.float32)
+        encoder_input = tf.convert_to_tensor(time_serie_to_forcast.astype(np.float32, copy=False), dtype=tf.float32)
         memory = self._encode(encoder_input, training=False)
 
         batch_size = tf.shape(encoder_input)[0]
@@ -173,6 +160,4 @@ class Forcaster(TfModel):
             next_step = out[:, -1:, :]
             seq = tf.concat([seq, next_step], axis=1)
 
-        y = seq.numpy()
-        y = self._denormalize_target_np(y)
-        return y
+        return seq.numpy()

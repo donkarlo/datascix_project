@@ -1,8 +1,10 @@
-
+from datascix.ml.model.application.time_series_forcating.kind.transformer.architecture.architecture import Architecture
+from datascix.ml.model.application.time_series_forcating.kind.transformer.forcaster import Forcaster
+from datascix.ml.model.application.time_series_forcating.kind.transformer.training.config import Config
+from datascix.ml.model.application.time_series_forcating.kind.transformer.training.trainer import Trainer
 from datascix.ml.model.application.time_series_forcating.training.sliding_window.generator import Generator
 from datascix.ml.model.application.time_series_forcating.training.sliding_window.sliding_window import \
     SlidingWindow
-from datascix.ml.model.application.time_series_forcating.kind.transformer.transformer_draft import TransformerDraft
 
 from datascix.ml.model.application.time_series_forcating.validation.kind.train_test import TrainTest
 from utilix.data.storage.kind.file.numpi.multi_valued import MultiValued as NpMultiValued
@@ -29,18 +31,21 @@ class TestTrainTest:
         output_array = sliding_windows_generator.get_outputs()
         input_output_pairs = sliding_windows_generator.get_input_output_pairs()
 
-        transformer_model = TransformerDraft(
-            model_dimension=128,
-            number_of_attention_heads=8,
-            feed_forward_dimension=256,
-            output_time_steps=sliding_window.get_output_length(),
-            output_feature_count=output_array.shape[2],
-            dropout_rate=0.1,
-            epochs=2,
-            batch_size=5,
-        )
+        architecture = Architecture(model_dimension= 128,
+        number_of_attention_heads= 8,
+        feed_forward_dimension= 256,
+        output_time_steps=sliding_window.get_output_length(),
+        output_feature_count= output_array.shape[2],
+        maximum_time_steps= 2048,
+        dropout_rate=0.1)
+
+        trainer_config = Config(10,16, 1e-3,True)
+        trainer = Trainer(architecture, trainer_config, input_array, output_array)
+        learned_parameters = trainer.get_learned_parameters()
+
+        forcaster = Forcaster(architecture, learned_parameters)
 
         training_population = NumpiedPopulation(input_output_pairs)
         open_unit_interval = OpenUnitInterval(0.7)
-        train_test = TrainTest.init_from_partitionaning_ratio(transformer_model, training_population, open_unit_interval)
+        train_test = TrainTest.init_from_partitionaning_ratio(forcaster, training_population, open_unit_interval)
         train_test.render_euclidean_distance()

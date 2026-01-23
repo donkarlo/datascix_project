@@ -4,7 +4,7 @@ from datascix.ml.model.application.time_series_forcating.training.sliding_window
     SlidingWindow
 from datascix.ml.model.application.time_series_forcating.kind.transformer.transformer_draft import TransformerDraft
 
-from datascix.ml.model.application.time_series_forcating.validation.kind.train_test import TrainTest
+from datascix.ml.model.application.time_series_forcating.validation.kind.train_test_draft import TrainTestDraft
 from utilix.data.storage.kind.file.numpi.multi_valued import MultiValued as NpMultiValued
 from utilix.os.file_system.file.file import File as OsFile
 from utilix.os.file_system.path.file import File as FilePath
@@ -20,7 +20,7 @@ class TestTrainTestDraft:
         storage = NpMultiValued(os_file, False)
         storage.load()
         # removing the time
-        ram = storage.get_ram()[0:300, 1:]
+        ram = storage.get_ram()[0:30000, 1:]
 
         sliding_window = SlidingWindow(100, 100, 5)
         sliding_windows_generator = Generator(ram, sliding_window)
@@ -36,11 +36,11 @@ class TestTrainTestDraft:
             output_time_steps=sliding_window.get_output_length(),
             output_feature_count=output_array.shape[2],
             dropout_rate=0.1,
-            epochs=2,
-            batch_size=5,
+            epochs=10,
+            batch_size=16,
         )
 
         training_population = NumpiedPopulation(input_output_pairs)
         open_unit_interval = OpenUnitInterval(0.7)
-        train_test = TrainTest.init_from_partitionaning_ratio(transformer_model, training_population, open_unit_interval)
+        train_test = TrainTestDraft.init_from_partitionaning_ratio(transformer_model, training_population, open_unit_interval)
         train_test.render_euclidean_distance()

@@ -8,7 +8,6 @@ class Pipe:
     def __init__(self, node_group: NodeGroup):
         self._node_group = node_group
 
-    def init_by_nodes_list(self, nodes_lits:List[Node])->None:
+    @classmethod
+    def init_by_nodes_list(cls, nodes_lits: List[Node]) -> None:
         pass
-
-

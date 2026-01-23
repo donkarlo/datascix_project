@@ -1,9 +1,11 @@
 import numpy as np
 import matplotlib
 
-from datascix.ml.model.application.time_series_forcating.kind.transformer.forcaster import Forcaster
-from datascix.ml.model.application.time_series_forcating.kind.transformer.training.trainer import Trainer
 from mathx.view.kind.point_cloud.decorator.lined.ordered_intra_line_connected import OrderedIntraLineConnected
+
+matplotlib.use("QtAgg")
+import matplotlib.pyplot as plt
+from datascix.ml.model.application.time_series_forcating.time_series_forcasting import TimeSeriesForcasting
 from datascix.ml.model.validation.validation import Validation
 from mathx.setex.decorator.factory.numpied import Numpied as NumpiedSet
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
@@ -15,11 +17,12 @@ from mathx.view.pair_set.group.Group import Group as GroupPairSet
 from mathx.view.pair_set.pair_set import PairSet
 
 
-class TrainTest(Validation):
-    def __init__(self, forcaster:Forcaster, train_set: NumpiedSet, test_set: NumpiedSet):
+class TrainTestDraft(Validation):
+    def __init__(self, model: TimeSeriesForcasting, train_set: NumpiedSet, test_set: NumpiedSet):
         self._test_set_predictions: np.ndarray | None = None
         self._test_set_target_values: np.ndarray | None = None
-        self._forcaster = forcaster
+
+        self._model = model
 
         self._train_set_pairs = np.asarray(train_set.get_members())
         self._train_set_inputs = self._train_set_pairs[:, 0]
@@ -29,10 +32,15 @@ class TrainTest(Validation):
         self._test_set_inputs = self._test_set_pairs[:, 0]
         self._test_set_targets = self._test_set_pairs[:, 1]
 
+        self._train()
         self._test()
 
+
+    def _train(self)->None:
+        self._model.train(self._train_set_inputs, self._train_set_targets)
+
     def _test(self)->None:
-        self._test_set_predictions = self._forcaster.get_forcast(self._test_set_inputs)
+        self._test_set_predictions = self._model.get_forcast(self._test_set_inputs)
 
     def render_euclidean_distance(self):
 
@@ -55,11 +63,6 @@ class TrainTest(Validation):
         # plt.show()
 
     def render_line_connected_corresponding_pairs(self):
-        """
-        This only works if the data is 2d or 3d
-        Returns:
-
-        """
         test_set_targets = PairSet(self._test_set_targets)
         test_set_predictions = PairSet(self._test_set_predictions)
         test_set_predictions_group_pair_set = GroupPairSet([test_set_predictions])
@@ -68,8 +71,8 @@ class TrainTest(Validation):
         line_connected_multi_data_set.show()
 
     @classmethod
-    def init_from_partitionaning_ratio(cls, forcaster: Forcaster, population: NumpiedPopulation, ratio: OpenUnitInterval)->None:
+    def init_from_partitionaning_ratio(cls, model: TimeSeriesForcasting, population: NumpiedPopulation, ratio: OpenUnitInterval)->None:
         subset_complement_partition = population.get_random_sample_and_complement_by_ratio(ratio)
         train_set = subset_complement_partition.get_subset()
         test_set = subset_complement_partition.get_complement()
-        return cls(forcaster, train_set, test_set)
+        return cls(model, train_set, test_set)
