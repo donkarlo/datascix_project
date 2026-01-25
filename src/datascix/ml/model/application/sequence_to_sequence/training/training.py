@@ -1,2 +1,6 @@
+from datascix.ml.model.architecture.architecture import Architecture
+
+
 class Training:
-    pass
+    def __init__(self, architecture:Architecture, learned_parameters):
+        pass
