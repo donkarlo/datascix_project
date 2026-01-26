@@ -17,7 +17,7 @@ class Pca:
     def __init__(self) -> None:
         # ----- Load LiDAR scans from pickle -----
         path = Path(
-            "/pair_set/experiements/oldest/robots/uav1/mind/memory/long_term/explicit/episodic/normal/lidar_scan_ranges_sliced_from_1_to_300000/lidar_scan_ranges_sliced_from_1_to_300000.pkl"
+            "/group/experiements/oldest/robots/uav1/mind/memory/long_term/explicit/episodic/normal/lidar_scan_ranges_sliced_from_1_to_300000/lidar_scan_ranges_sliced_from_1_to_300000.pkl"
         )
 
         os_file = File.init_from_path(path)
@@ -36,7 +36,7 @@ class Pca:
 
         scan_vecs = np.array(scan_vecs, dtype=np.float64)
 
-        # ----- Clean LiDAR pair_set -----
+        # ----- Clean LiDAR group -----
         # RPLidar A2 maximum usable range is about 14 m, we keep 15.0 as a safe clipping bound.
         max_range = 15.0
 
@@ -62,7 +62,7 @@ class Pca:
         labels = np.where(self._kappa_values >= corner_threshold, 1, 0)
         self._labels = labels
 
-        print("Number of scans:", self._scan_vecs.shape[0])
+        print("Numbered of scans:", self._scan_vecs.shape[0])
         print("Corner threshold (kappa):", corner_threshold)
         print("Wall scans:", int(np.sum(labels == 0)))
         print("Corner scans:", int(np.sum(labels == 1)))

@@ -37,7 +37,7 @@ class Generator:
         time_length = self._np_array.shape[0]
 
         if total_length > time_length:
-            raise ValueError("input_length + output_length must be <= pair_set.shape[0]")
+            raise ValueError("input_length + output_length must be <= group.shape[0]")
 
         start_indices = self._get_start_indices(time_length, total_length, step)
 

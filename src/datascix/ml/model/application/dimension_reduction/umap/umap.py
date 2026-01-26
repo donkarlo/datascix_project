@@ -20,7 +20,7 @@ class Umap:
 
     def __init__(self) -> None:
         path = Path(
-            "/pair_set/experiements/oldest/robots/uav1/mind/memory/long_term/explicit/episodic/normal/lidar_scan_ranges_sliced_from_1_to_300000/lidar_scan_ranges_sliced_from_1_to_300000.pkl"
+            "/group/experiements/oldest/robots/uav1/mind/memory/long_term/explicit/episodic/normal/lidar_scan_ranges_sliced_from_1_to_300000/lidar_scan_ranges_sliced_from_1_to_300000.pkl"
         )
 
         os_file = File.init_from_path(path)
@@ -39,7 +39,7 @@ class Umap:
 
         lidar_vectors = np.array(lidar_vectors, dtype=np.float64)
 
-        # Clean LiDAR pair_set
+        # Clean LiDAR group
         max_range = 15.0
         lidar_vectors[~np.isfinite(lidar_vectors)] = max_range
         lidar_vectors[lidar_vectors > max_range] = max_range

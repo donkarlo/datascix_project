@@ -1,4 +1,4 @@
-from datascix.ml.model.application.sequence_to_sequence.training.learned_parameters import LearnedParameters
+from datascix.ml.model.application.sequence_to_sequence.trainer.learned_parameters import LearnedParameters
 from datascix.ml.model.architecture.architecture import Architecture as ModelArchitecture
 
 

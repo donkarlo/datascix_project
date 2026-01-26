@@ -4,13 +4,13 @@ from tensorflow.keras import layers as TfLayers, Model as TfModel
 
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.architecture.architecture import \
     Architecture
-from datascix.ml.model.application.sequence_to_sequence.training.learned_parameters import LearnedParameters
+from datascix.ml.model.application.sequence_to_sequence.trainer.learned_parameters import LearnedParameters
 
 
 class Predictor:
     """Autoregressive forecaster aligned with TransformerDraft.
 
-    This class builds the same network as Training and then loads weights via set_weights.
+    This class builds the same network as Trainer and then loads weights via set_weights.
     Inference is strictly autoregressive and starts with an all-zero first token.
     """
 
@@ -72,7 +72,7 @@ class Predictor:
         enc_x = TfLayers.Lambda(lambda z: add_positional(z, enc_pos_emb), name="enc_add_pos")(enc_proj)
         dec_y = TfLayers.Lambda(lambda z: add_positional(z, dec_pos_emb), name="dec_add_pos")(dec_proj)
 
-        # ENCODER (aligned with Training / TransformerDraft)
+        # ENCODER (aligned with Trainer / TransformerDraft)
         enc_mha_layer = TfLayers.MultiHeadAttention(
             num_heads=heads,
             key_dim=per_head,

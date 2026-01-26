@@ -6,14 +6,14 @@ from mathx.view.kind.point_cloud.decorator.lined.ordered_intra_line_connected im
 matplotlib.use("QtAgg")
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.time_series import TimeSeries
 from datascix.ml.model.validation.validation import Validation
-from mathx.setex.decorator.factory.numpied import Numpied as NumpiedSet
+from mathx.set_nd.decorator.factory.numpied import Numpied as NumpiedSet
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
-from mathx.statistic.population.kind.numpied import Numpied as NumpiedPopulation
-from mathx.view.kind.point_cloud.decorator.lined.group_pair_seted.group_pair_seted import GroupPairSeted
-from mathx.view.kind.point_cloud.decorator.lined.group_pair_seted.ordered_inter_line_connected import OrderedInterLineConnected
+from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered import Numbered as NumpiedPopulation
+from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.group_point_seted import MultiplePointGrouped
+from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.ordered_inter_line_connected import OrderedInterLineConnected
 from mathx.view.kind.point_cloud.point_cloud import PointCloud
-from mathx.view.pair_set.group.Group import Group as GroupPairSet
-from mathx.view.pair_set.pair_set import PairSet
+from mathx.view.kind.point_cloud.point.group.group.Group import Group as GroupPairSet
+from mathx.view.kind.point_cloud.point.group.group import Group
 
 
 class TrainTestDraft(Validation):
@@ -53,7 +53,7 @@ class TrainTestDraft(Validation):
         indices = np.arange(1, len(distances) + 1)
         two_dimensional = np.column_stack((indices, distances))
 
-        pair_set = PairSet(two_dimensional)
+        pair_set = Group(two_dimensional)
         point_cloud = OrderedIntraLineConnected(PointCloud(pair_set))
         point_cloud.build()
         point_cloud.render()
@@ -62,11 +62,11 @@ class TrainTestDraft(Validation):
         # plt.show()
 
     def render_line_connected_corresponding_pairs(self):
-        test_set_targets = PairSet(self._test_set_targets)
-        test_set_predictions = PairSet(self._test_set_predictions)
+        test_set_targets = Group(self._test_set_targets)
+        test_set_predictions = Group(self._test_set_predictions)
         test_set_predictions_group_pair_set = GroupPairSet([test_set_predictions])
 
-        line_connected_multi_data_set = OrderedInterLineConnected(GroupPairSeted(PointCloud(test_set_targets), test_set_predictions_group_pair_set))
+        line_connected_multi_data_set = OrderedInterLineConnected(MultiplePointGrouped(PointCloud(test_set_targets), test_set_predictions_group_pair_set))
         line_connected_multi_data_set.show()
 
     @classmethod

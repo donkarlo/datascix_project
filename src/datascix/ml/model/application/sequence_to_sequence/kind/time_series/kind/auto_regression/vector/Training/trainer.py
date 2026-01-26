@@ -13,7 +13,7 @@ from datascix.ml.model.application.sequence_to_sequence.kind.time_series.trainin
 from utilix.oop.inheritance.overriding.override_from import override_from
 
 
-class Training(TimeSeriesTraining):
+class Trainer(TimeSeriesTraining):
     def __init__(self, architecture: Architecture, config: Config, input_target_array: np.ndarray):
         TimeSeriesTraining.__init__(self, architecture, config, input_target_array)
 
@@ -93,7 +93,7 @@ class Training(TimeSeriesTraining):
 
             return np.asarray(input_target_array, dtype=float)
 
-        raise ValueError("Unsupported input_target_array shape for VAR training.")
+        raise ValueError("Unsupported input_target_array shape for VAR trainer.")
 
     def _concat_object_input_pairs(self, input_target_pairs: np.ndarray) -> np.ndarray:
         """

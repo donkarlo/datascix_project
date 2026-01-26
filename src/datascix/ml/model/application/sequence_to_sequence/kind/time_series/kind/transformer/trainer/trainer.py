@@ -1,15 +1,18 @@
+from typing import Optional
+
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers as TfLayers, Model as TfModel
 
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.architecture.architecture import \
     Architecture
-from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.training.config import Config
-from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.training.learned_parameters import \
+from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.trainer.config import Config
+from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.trainer.learned_parameters import \
     LearnedParameters
+from mathx.set_nd.kind.countable.finit.kind.member_mentioned.numbered import Numbered
 
 
-class Training:
+class Trainer:
     """Train a seq2seq Transformer and expose only learned weights.
 
     This implementation is intentionally aligned with TransformerDraft:
@@ -28,13 +31,13 @@ class Training:
             self,
             architecture: Architecture,
             config: Config,
-            input_target_pairs: np.ndarray
+            input_target_pairs: Numbered
     ):
         self._architecture = architecture
         self._config = config
 
-        input_array = input_target_pairs[:, 0]
-        target_array = input_target_pairs[:, 1]
+        input_array = input_target_pairs.get_members()[:, 0]
+        target_array = input_target_pairs.get_members()[:, 1]
 
         if not isinstance(input_array, np.ndarray) or not isinstance(target_array, np.ndarray):
             raise TypeError("input_array and target_array must be np.ndarray.")
@@ -188,12 +191,12 @@ class Training:
         )
 
         self._learned_parameters = LearnedParameters(weights=self._tf_model.get_weights())
+        if self._learned_parameters is None:
+            raise RuntimeError("learned_parameters is not available.")
         self._has_trained = True
 
     def get_architecture(self) -> Architecture:
         return self._architecture
 
     def get_learned_parameters(self) -> LearnedParameters:
-        if self._learned_parameters is None:
-            raise RuntimeError("learned_parameters is not available.")
         return self._learned_parameters

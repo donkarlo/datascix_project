@@ -1,5 +1,5 @@
 class Architecture:
     """
-    Usually used by both the Training and predictor
+    Usually used by both the Trainer and predictor
     """
     pass

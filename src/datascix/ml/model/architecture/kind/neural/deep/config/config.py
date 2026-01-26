@@ -1,5 +1,5 @@
 class Config:
     """
-    Architecture needed for training phase
+    Architecture needed for trainer phase
     """
     pass

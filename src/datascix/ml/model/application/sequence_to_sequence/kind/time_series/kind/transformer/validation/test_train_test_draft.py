@@ -4,12 +4,12 @@ from datascix.ml.model.supervision.kind.supervion_dependent.kind.self_supervised
     SlidingWindow
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series_forcating.kind.transformer.transformer_draft import TransformerDraft
 
-from datascix.ml.model.application.sequence_to_sequence.validation.kind.train_test_draft import TrainTestDraft
+from datascix.ml.model.application.sequence_to_sequence.validation.kind.train_test.train_test_draft import TrainTestDraft
 from utilix.data.storage.kind.file.numpi.multi_valued import MultiValued as NpMultiValued
 from utilix.os.file_system.file.file import File as OsFile
 from utilix.os.file_system.path.file import File as FilePath
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
-from mathx.statistic.population.kind.numpied import Numpied as NumpiedPopulation
+from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered import Numbered as NumpiedPopulation
 
 class TestTrainTestDraft:
     def test_plot_mean_euclidean_distance_plot(self):
