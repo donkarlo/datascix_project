@@ -9,7 +9,7 @@ from datascix.ml.model.validation.validation import Validation
 from mathx.set_nd.decorator.factory.numpied import Numpied as NumpiedSet
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
 from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered import Numbered as NumpiedPopulation
-from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.group_point_seted import MultiplePointGrouped
+from mathx.view.kind.point_cloud.kind.multiple_point_group.multiple_point_grouped import MultiplePointGrouped
 from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.ordered_inter_line_connected import OrderedInterLineConnected
 from mathx.view.kind.point_cloud.point_cloud import PointCloud
 from mathx.view.kind.point_cloud.point.group.group.Group import Group as GroupPairSet
@@ -55,7 +55,7 @@ class TrainTestDraft(Validation):
 
         pair_set = Group(two_dimensional)
         point_cloud = OrderedIntraLineConnected(PointCloud(pair_set))
-        point_cloud.build()
+        point_cloud._build()
         point_cloud.render()
 
         # plt.plot(distance_curve)

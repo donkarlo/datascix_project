@@ -13,7 +13,7 @@ from mathx.view.kind.point_cloud.decorator.lined.ordered_intra_line_connected im
 from datascix.ml.model.validation.validation import Validation
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
 from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered import Numbered as NumpiedPopulation
-from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.group_point_seted import MultiplePointGrouped
+from mathx.view.kind.point_cloud.kind.multiple_point_group.multiple_point_grouped import MultiplePointGrouped
 from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.ordered_inter_line_connected import OrderedInterLineConnected
 from mathx.view.kind.point_cloud.point_cloud import PointCloud
 from mathx.view.kind.point_cloud.point.group.group import Group
@@ -25,13 +25,13 @@ class TrainTestByPointSampling(Validation):
         self._test_set_target_values: np.ndarray | None = None
         self._predictor = predictor
 
-        self._train_set_pairs = np.asarray(train_set)
+        self._train_set_pairs = train_set
         self._train_set_inputs = self._train_set_pairs.get_members()[:, 0]
         self._train_set_targets = self._train_set_pairs.get_members()[:, 1]
 
-        self._test_set_pairs = np.asarray(test_set)
-        self._test_set_inputs = self._test_set_pairs[:, 0]
-        self._test_set_targets = self._test_set_pairs[:, 1]
+        self._test_set_pairs = test_set
+        self._test_set_inputs = self._test_set_pairs.get_members()[:, 0]
+        self._test_set_targets = self._test_set_pairs.get_members()[:, 1]
 
         self._test()
 
@@ -51,7 +51,6 @@ class TrainTestByPointSampling(Validation):
 
         pair_set = Group(two_dimensional)
         point_cloud = OrderedIntraLineConnected(PointCloud(pair_set))
-        point_cloud.build()
         point_cloud.render()
 
     def render_line_connected_corresponding_pairs(self):
@@ -75,7 +74,7 @@ class TrainTestByPointSampling(Validation):
         train_set = subset_complement_partition.get_subset()
         test_set = subset_complement_partition.get_complement()
 
-        train_set_sliding_window = SlidingWindow(100, 100, 100)
+        train_set_sliding_window = SlidingWindow(100, 100, 25)
         training_set_sliding_windows_generator = Generator(train_set.get_members(), train_set_sliding_window)
         train_set_input_target_pairs = MemberDefinedNumberSet(training_set_sliding_windows_generator.get_input_output_pairs())
 

@@ -10,9 +10,11 @@ from datascix.ml.model.application.sequence_to_sequence.validation.kind.train_te
 
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
 from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered import Numbered as NumpiedPopulation
+from mathx.view.kind.point_cloud.point_cloud import PointCloud
 from utilix.data.storage.kind.file.numpi.multi_valued import MultiValued as NpMultiValued
 from utilix.os.file_system.file.file import File as OsFile
 from utilix.os.file_system.path.file import File as FilePath
+from mathx.view.kind.point_cloud.point.group.group import Group as PointGroup
 
 
 class TestTrainTest:
@@ -24,7 +26,12 @@ class TestTrainTest:
         storage = NpMultiValued(os_file, False)
         storage.load()
         # removing the time
-        ram = storage.get_ram()[0:3000, 1:]
+        one_cycle_count = 24450
+        ram = storage.get_ram()[0:one_cycle_count, 1:]
+
+        cloud_point_math_view = PointCloud(PointGroup(ram))
+        cloud_point_math_view.render()
+
 
         architecture = Architecture(
             model_dimension=128,
@@ -37,7 +44,7 @@ class TestTrainTest:
             dropout_rate=0.1,
         )
 
-        trainer_config = Config(epochs=5,
+        trainer_config = Config(epochs=20,
                                 batch_size=16,
                                 learning_rate=1e-3,
                                 shuffle=True)
