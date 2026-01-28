@@ -3,16 +3,16 @@ import numpy as np
 from datascix.ml.model.application.sequence_to_sequence.predictor import Predictor
 from datascix.ml.model.application.sequence_to_sequence.trainer.trainer import Trainer
 from datascix.ml.model.architecture.architecture import Architecture
-from datascix.ml.model.supervision.kind.supervion_dependent.kind.self_supervised.sequence_to_sequence.sliding_window.generator import \
+from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.generator import \
     Generator
-from datascix.ml.model.supervision.kind.supervion_dependent.kind.self_supervised.sequence_to_sequence.sliding_window.sliding_window import \
+from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.sliding_window import \
     SlidingWindow
 from datascix.ml.model.supervision.kind.supervion_dependent.training.config import Config
 from mathx.set_nd.kind.countable.finit.kind.member_mentioned.numbered import Numbered as MemberDefinedNumberSet
 from mathx.view.kind.point_cloud.decorator.lined.ordered_intra_line_connected import OrderedIntraLineConnected
 from datascix.ml.model.validation.validation import Validation
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
-from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered import Numbered as NumpiedPopulation
+from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumpiedPopulation
 from mathx.view.kind.point_cloud.kind.multiple_point_group.multiple_point_grouped import MultiplePointGrouped
 from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.ordered_inter_line_connected import OrderedInterLineConnected
 from mathx.view.kind.point_cloud.point_cloud import PointCloud
@@ -74,7 +74,7 @@ class TrainTestByPointSampling(Validation):
         train_set = subset_complement_partition.get_subset()
         test_set = subset_complement_partition.get_complement()
 
-        train_set_sliding_window = SlidingWindow(100, 100, 25)
+        train_set_sliding_window = SlidingWindow(100, 100, 5)
         training_set_sliding_windows_generator = Generator(train_set.get_members(), train_set_sliding_window)
         train_set_input_target_pairs = MemberDefinedNumberSet(training_set_sliding_windows_generator.get_input_output_pairs())
 

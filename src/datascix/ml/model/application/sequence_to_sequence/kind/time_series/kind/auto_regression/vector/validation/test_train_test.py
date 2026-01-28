@@ -7,12 +7,12 @@ from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.au
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.auto_regression.vector.predictor import \
     Predictor
 from datascix.ml.model.application.sequence_to_sequence.validation.kind.train_test.train_test_sliding_window_sampling import TrainTestBySlidingWindowSampling
-from datascix.ml.model.supervision.kind.supervion_dependent.kind.self_supervised.sequence_to_sequence.sliding_window.generator import \
+from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.generator import \
     Generator
-from datascix.ml.model.supervision.kind.supervion_dependent.kind.self_supervised.sequence_to_sequence.sliding_window.sliding_window import \
+from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.sliding_window import \
     SlidingWindow
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
-from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered import Numbered as NumpiedPopulation
+from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumpiedPopulation
 from utilix.data.storage.kind.file.numpi.multi_valued import MultiValued as NpMultiValued
 from utilix.os.file_system.file.file import File as OsFile
 from utilix.os.file_system.path.file import File as FilePath

@@ -1,6 +1,6 @@
 
-from datascix.ml.model.supervision.kind.supervion_dependent.kind.self_supervised.sequence_to_sequence.sliding_window.generator import Generator
-from datascix.ml.model.supervision.kind.supervion_dependent.kind.self_supervised.sequence_to_sequence.sliding_window.sliding_window import \
+from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.generator import Generator
+from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.sliding_window import \
     SlidingWindow
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series_forcating.kind.transformer.transformer_draft import TransformerDraft
 
@@ -9,7 +9,7 @@ from utilix.data.storage.kind.file.numpi.multi_valued import MultiValued as NpMu
 from utilix.os.file_system.file.file import File as OsFile
 from utilix.os.file_system.path.file import File as FilePath
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
-from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered import Numbered as NumpiedPopulation
+from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumpiedPopulation
 
 class TestTrainTestDraft:
     def test_plot_mean_euclidean_distance_plot(self):
