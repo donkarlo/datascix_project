@@ -97,8 +97,8 @@ class Trainer(TimeSeriesTraining):
 
     def _concat_object_input_pairs(self, input_target_pairs: np.ndarray) -> np.ndarray:
         """
-        input_target_pairs: shape (pair_count, 2), dtype object
-        input_target_pairs[:, 0] elements must be 1D or 2D numeric arrays.
+        training_input_target_pairs: shape (pair_count, 2), dtype object
+        training_input_target_pairs[:, 0] elements must be 1D or 2D numeric arrays.
         """
         input_segments: list[np.ndarray] = []
 
@@ -113,7 +113,7 @@ class Trainer(TimeSeriesTraining):
             input_segments.append(segment)
 
         if len(input_segments) == 0:
-            raise ValueError("input_target_pairs must not be empty.")
+            raise ValueError("training_input_target_pairs must not be empty.")
 
         feature_count = input_segments[0].shape[1]
         for segment in input_segments:

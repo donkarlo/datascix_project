@@ -11,7 +11,7 @@ from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.tr
     LearnedParameters
 
 
-class GaussianTrainer:
+class Trainer:
     """Train a Gaussian forecaster: predicts (mu, log_var) and trains with Gaussian NLL (diagonal)."""
 
     def __init__(self, architecture: GaussianArchitecture, config: Config, input_target_pairs: np.ndarray):
@@ -47,9 +47,11 @@ class GaussianTrainer:
 
         self._train_once()
 
-    def _gaussian_nll(self, y_true: tf.Tensor, outputs: list[tf.Tensor]) -> tf.Tensor:
-        mu = outputs[0]
-        log_var = outputs[1]
+    def _gaussian_nll(self, y_true: tf.Tensor, y_pred: tf.Tensor) -> tf.Tensor:
+        output_feature_count = int(self._architecture.get_output_feature_count())
+
+        mu = y_pred[..., :output_feature_count]
+        log_var = y_pred[..., output_feature_count:]
 
         eps = tf.constant(1e-6, dtype=log_var.dtype)
         log_var = tf.maximum(log_var, tf.math.log(eps))
@@ -70,7 +72,7 @@ class GaussianTrainer:
 
         self._tf_model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=self._config.get_learning_rate()),
-            loss=loss_fn,
+            loss=self._gaussian_nll,
         )
 
         self._tf_model.fit(

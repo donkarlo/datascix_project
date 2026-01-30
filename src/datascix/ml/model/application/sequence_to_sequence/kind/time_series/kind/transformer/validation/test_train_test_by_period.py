@@ -20,14 +20,14 @@ from utilix.os.file_system.path.file import File as FilePath
 class TestTrainTestByPeriodSampling:
     def test_plot_mean_euclidean_distance_plot(self):
         file_path = FilePath(
-            "/home/donkarlo/Dropbox/phd/data/experiements/oldest/robots/uav1/structure/mind/memory/explicit/long_term/episodic/normal/gaussianed_quaternion_kinematic_sliced_from_1_to_300000/time_position_sequence_sliced_from_1_to_300000.npz"
+            "/home/donkarlo/Dropbox/repo/sociomind_project/src/sociomind/experiment/kind/oldest/robot/uav1/structure/mind/memory/explicit/long_term/episodic/normal/gaussianed_quaternion_kinematic_sliced_from_1_to_300000/time_position_sequence/time_position_sequence.npz"
         )
         os_file = OsFile.init_from_path(file_path)
         storage = NpMultiValued(os_file, False)
         storage.load()
         # removing the time
         one_period_members_count = 24450
-        ram = storage.get_ram()[:9 * 24450, 1:]  # (T, 3)
+        ram = storage.get_ram()[:10 * 24450, 1:]  # (T, 3)
 
         usable_len = (len(ram) // one_period_members_count) * one_period_members_count
         ram = ram[:usable_len]
@@ -40,7 +40,7 @@ class TestTrainTestByPeriodSampling:
         training_partitions = np.vstack(
             [partitioned_population[0], partitioned_population[1], partitioned_population[2], partitioned_population[3],
              partitioned_population[4], partitioned_population[5], partitioned_population[6], partitioned_population[7]])
-        testing_partition = partitioned_population[8]
+        testing_partition = np.vstack([partitioned_population[8], partitioned_population[9]])
 
         print("ram.shape:", ram.shape, "ram.nbytes(MB):", ram.nbytes / 1024 / 1024)
         print("partitioned_population.shape:", partitioned_population.shape, "dtype:", partitioned_population.dtype)
@@ -48,10 +48,10 @@ class TestTrainTestByPeriodSampling:
         # cloud_point_math_view = PointCloud(PointGroup(ram))
         # cloud_point_math_view.render()
 
-        # sliding window config
+        # sliding window trainer_config
         sliding_window = SlidingWindow(100, 100, 10)
 
-        # architecture config
+        # architecture trainer_config
         feature_dimension = ram.shape[1]
         architecture = Architecture(
             model_dimension=64,
@@ -64,9 +64,9 @@ class TestTrainTestByPeriodSampling:
             dropout_rate=0.1,
         )
 
-        # training config
+        # training trainer_config
         trainer_config = TrainerConfig(
-            epochs=20,
+            epochs=15,
             batch_size=8,
             learning_rate=1e-3,
             shuffle=True)
