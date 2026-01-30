@@ -1,6 +1,6 @@
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.architecture.architecture import \
     Architecture
-from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.predictor import \
+from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.predictor.predictor import \
     Predictor
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.trainer.config import Config
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.trainer.trainer import \
@@ -8,8 +8,7 @@ from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.tr
 from datascix.ml.model.application.sequence_to_sequence.validation.kind.train_test.train_test_by_point_sampling import \
     TrainTestByPointSampling
 
-from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
-from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumpiedPopulation
+from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumberedPopulation
 from mathx.view.kind.point_cloud.point_cloud import PointCloud
 from utilix.data.storage.kind.file.numpi.multi_valued import MultiValued as NpMultiValued
 from utilix.os.file_system.file.file import File as OsFile
@@ -17,7 +16,7 @@ from utilix.os.file_system.path.file import File as FilePath
 from mathx.view.kind.point_cloud.point.group.group import Group as PointGroup
 
 
-class TestTrainTest:
+class TestTrainTestByPointSampling:
     def test_plot_mean_euclidean_distance_plot(self):
         file_path = FilePath(
             "/home/donkarlo/Dropbox/phd/data/experiements/oldest/robots/uav1/structure/mind/memory/explicit/long_term/episodic/normal/gaussianed_quaternion_kinematic_sliced_from_1_to_300000/time_position_sequence_sliced_from_1_to_300000.npz"
@@ -27,7 +26,7 @@ class TestTrainTest:
         storage.load()
         # removing the time
         one_cycle_count = 24450
-        ram = storage.get_ram()[0:one_cycle_count, 1:]
+        ram = storage.get_ram()[0:60000, 1:]
 
         cloud_point_math_view = PointCloud(PointGroup(ram))
         cloud_point_math_view.render()
@@ -44,12 +43,11 @@ class TestTrainTest:
             dropout_rate=0.1,
         )
 
-        trainer_config = Config(epochs=20,
+        trainer_config = Config(epochs=5,
                                 batch_size=16,
                                 learning_rate=1e-3,
                                 shuffle=True)
 
-        sample_population = NumpiedPopulation(ram)
-        open_unit_interval = OpenUnitInterval(0.7)
-        train_test = TrainTestByPointSampling.init_from_partitionaning_ratio(Trainer, architecture, trainer_config, Predictor, sample_population, open_unit_interval)
+        population = NumberedPopulation(ram)
+        train_test = TrainTestByPointSampling.init_from_partitionaning_ratio(Trainer, architecture, trainer_config, Predictor, population, 0.7)
         train_test.render_euclidean_distance()

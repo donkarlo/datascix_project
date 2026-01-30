@@ -1,3 +1,3 @@
 class TestPipe:
-    def test_normalized_scale_pca_dimention_reduction(self):
+    def test_normalized_scale_pca_dimension_reduction(self):
         pass

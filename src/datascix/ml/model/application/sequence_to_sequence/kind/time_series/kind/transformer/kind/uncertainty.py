@@ -1,8 +1,8 @@
 import numpy as np
 import tensorflow as tf
 
-from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.generator import Generator
-from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.sliding_window import SlidingWindow
+from mathx.statistic.population.sampling.sampler.sampler import Generator
+from mathx.statistic.population.sampling.sampler.sampler import SlidingWindow
 from tensorflow.keras import layers as TfLayers, Model as TfModel
 from utilix.data.storage.kind.file.numpi.multi_valued import MultiValued as NpMultiValued
 from utilix.os.file_system.file.file import File as OsFile

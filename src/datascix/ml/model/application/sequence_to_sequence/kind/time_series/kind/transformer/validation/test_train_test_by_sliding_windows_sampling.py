@@ -1,12 +1,12 @@
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.architecture.architecture import \
     Architecture
-from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.predictor import \
+from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.predictor.predictor import \
     Predictor
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.trainer.config import Config
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.trainer.trainer import \
     Trainer
-from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.generator import Generator
-from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.sliding_window import SlidingWindow
+from mathx.statistic.population.sampling.sampler.sampler import Generator
+from mathx.statistic.population.sampling.sampler.sampler import SlidingWindow
 from datascix.ml.model.application.sequence_to_sequence.validation.kind.train_test.train_test_sliding_window_sampling import \
     TrainTestBySlidingWindowSampling
 

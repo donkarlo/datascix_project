@@ -1,47 +1,46 @@
 import numpy as np
 
-from datascix.ml.model.application.sequence_to_sequence.predictor import Predictor
+from datascix.ml.model.application.sequence_to_sequence.predictor.predictor import Predictor
 from datascix.ml.model.application.sequence_to_sequence.trainer.trainer import Trainer
 from datascix.ml.model.architecture.architecture import Architecture
-from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.generator import \
-    Generator
-from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.sliding_window import \
-    SlidingWindow
 from datascix.ml.model.supervision.kind.supervion_dependent.training.config import Config
-from mathx.set_nd.kind.countable.finit.kind.member_mentioned.numbered import Numbered as MemberDefinedNumberSet
+from mathx.number.kind.real.interval.unit.close_unit_interval_number import CloseUnitIntervalNumber
+from mathx.statistic.population.sampling.sampler.kind.countable.finite.members_mentioned.numbered.random.random import \
+    Random
+from mathx.statistic.population.sampling.sampler.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.generator import \
+    Generator as SlidingWindowGenerator
+from mathx.statistic.population.sampling.sampler.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.sliding_window import SlidingWindow
+from mathx.statistic.population.sampling.sampler.size.kind.ratio import Ratio
 from mathx.view.kind.point_cloud.decorator.lined.ordered_intra_line_connected import OrderedIntraLineConnected
 from datascix.ml.model.validation.validation import Validation
-from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
-from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumpiedPopulation
-from mathx.view.kind.point_cloud.kind.multiple_point_group.multiple_point_grouped import MultiplePointGrouped
-from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.ordered_inter_line_connected import OrderedInterLineConnected
+from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumberedPopulation
 from mathx.view.kind.point_cloud.point_cloud import PointCloud
 from mathx.view.kind.point_cloud.point.group.group import Group
 
 
 class TrainTestByPointSampling(Validation):
-    def __init__(self, predictor:Predictor, train_set: MemberDefinedNumberSet, test_set: MemberDefinedNumberSet):
-        self._test_set_predictions: np.ndarray | None = None
-        self._test_set_target_values: np.ndarray | None = None
+    def __init__(self, predictor:Predictor, train_data, test_data):
+        self._test_predictions: np.ndarray | None = None
+        self._test_target_values: np.ndarray | None = None
         self._predictor = predictor
 
-        self._train_set_pairs = train_set
-        self._train_set_inputs = self._train_set_pairs.get_members()[:, 0]
-        self._train_set_targets = self._train_set_pairs.get_members()[:, 1]
+        self._train_data_pairs = train_data
+        self._train_data_inputs = self._train_data_pairs[:, 0]
+        self._train_data_targets = self._train_data_pairs[:, 1]
 
-        self._test_set_pairs = test_set
-        self._test_set_inputs = self._test_set_pairs.get_members()[:, 0]
-        self._test_set_targets = self._test_set_pairs.get_members()[:, 1]
+        self._test_set_pairs = test_data
+        self._test_set_inputs = self._test_set_pairs[:, 0]
+        self._test_set_targets = self._test_set_pairs[:, 1]
 
         self._test()
 
     def _test(self)->None:
-        self._test_set_predictions = self._predictor.get_predictions(self._test_set_inputs)
+        self._test_predictions = self._predictor.get_predictions(self._test_set_inputs)
 
 
 
     def render_euclidean_distance(self):
-        residuals = self._test_set_predictions - self._test_set_targets
+        residuals = self._test_predictions - self._test_set_targets
         residuals = np.linalg.norm(residuals, axis=-1)
         distance_curve = residuals.mean(axis=1)
 
@@ -53,34 +52,24 @@ class TrainTestByPointSampling(Validation):
         point_cloud = OrderedIntraLineConnected(PointCloud(pair_set))
         point_cloud.render()
 
-    def render_line_connected_corresponding_pairs(self):
-        """
-        This only works if the data is 2d or 3d
-        Returns:
-
-        """
-        test_set_targets = Group(self._test_set_targets)
-        test_set_predictions = Group(self._test_set_predictions)
-        test_set_predictions_group_pair_set = GroupPairSet([test_set_predictions])
-
-        line_connected_multi_data_set = OrderedInterLineConnected(MultiplePointGrouped(PointCloud(test_set_targets), test_set_predictions_group_pair_set))
-        line_connected_multi_data_set.show()
 
     @classmethod
-    def init_from_partitionaning_ratio(cls, trainer_class:Trainer, architecture:Architecture, trainer_configs:Config, predictor_class: Predictor, sample_population: NumpiedPopulation, ratio: OpenUnitInterval)->None:
+    def init_from_partitionaning_ratio(cls, trainer_class:Trainer, architecture:Architecture, trainer_configs:Config, predictor_class: Predictor, population: NumberedPopulation, ratio_value: float)->None:
 
-        subset_complement_partition = sample_population.get_random_sample_and_complement_by_ratio(ratio)
+        ratio_value = Ratio(CloseUnitIntervalNumber(ratio_value), population.get_size())
+        random_point_sampler = Random(population, ratio_value)
 
-        train_set = subset_complement_partition.get_subset()
-        test_set = subset_complement_partition.get_complement()
+        train_data = random_point_sampler.get_samples()
+        test_data = random_point_sampler.get_complements()
 
-        train_set_sliding_window = SlidingWindow(100, 100, 5)
-        training_set_sliding_windows_generator = Generator(train_set.get_members(), train_set_sliding_window)
-        train_set_input_target_pairs = MemberDefinedNumberSet(training_set_sliding_windows_generator.get_input_output_pairs())
+        sliding_window_step = 3
+        train_set_sliding_window = SlidingWindow(100, 100, sliding_window_step)
+        training_set_sliding_windows_generator = SlidingWindowGenerator(train_data, train_set_sliding_window)
+        train_set_input_target_pairs = training_set_sliding_windows_generator.get_input_output_pairs()
 
-        test_set_sliding_window = SlidingWindow(100, 100, 100)
-        test_set_sliding_windows_generator = Generator(test_set.get_members(), test_set_sliding_window)
-        test_set_input_target_pairs = MemberDefinedNumberSet(test_set_sliding_windows_generator.get_input_output_pairs())
+        test_set_sliding_window = SlidingWindow(100, 100, sliding_window_step)
+        test_set_sliding_windows_generator = SlidingWindowGenerator(test_data, test_set_sliding_window)
+        test_set_input_target_pairs = test_set_sliding_windows_generator.get_input_output_pairs()
 
 
 

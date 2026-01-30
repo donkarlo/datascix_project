@@ -9,7 +9,6 @@ from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.tr
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.trainer.config import Config
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.transformer.trainer.learned_parameters import \
     LearnedParameters
-from mathx.set_nd.kind.countable.finit.kind.member_mentioned.numbered import Numbered
 
 
 class Trainer:
@@ -31,13 +30,13 @@ class Trainer:
             self,
             architecture: Architecture,
             config: Config,
-            input_target_pairs: Numbered
+            input_target_pairs: np.ndarray
     ):
         self._architecture = architecture
         self._config = config
 
-        input_array = input_target_pairs.get_members()[:, 0]
-        target_array = input_target_pairs.get_members()[:, 1]
+        input_array = input_target_pairs[:, 0]
+        target_array = input_target_pairs[:, 1]
 
         if not isinstance(input_array, np.ndarray) or not isinstance(target_array, np.ndarray):
             raise TypeError("input_array and target_array must be np.ndarray.")
@@ -177,18 +176,24 @@ class Trainer:
         # Ensure variables are created
         _ = self._tf_model([enc[:1], dec[:1]], training=False)
 
+        print("BEFORE COMPILE")
         self._tf_model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=self._config.get_learning_rate()),
             loss=tf.keras.losses.MeanSquaredError(),
         )
 
+        self._tf_model.summary()
+
+        print("BEFORE FIT")
         self._tf_model.fit(
             [enc, dec],
             tgt,
             epochs=self._config.get_epochs(),
             batch_size=self._config.get_batch_size(),
             shuffle=self._config.get_shuffle(),
+            verbose= 2
         )
+        print("AFTER FIT")
 
         self._learned_parameters = LearnedParameters(weights=self._tf_model.get_weights())
         if self._learned_parameters is None:

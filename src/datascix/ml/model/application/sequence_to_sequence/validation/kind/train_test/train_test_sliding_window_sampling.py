@@ -1,6 +1,6 @@
 import numpy as np
 
-from datascix.ml.model.application.sequence_to_sequence.predictor import Predictor
+from datascix.ml.model.application.sequence_to_sequence.predictor.predictor import Predictor
 from datascix.ml.model.application.sequence_to_sequence.trainer.trainer import Trainer
 from datascix.ml.model.architecture.architecture import Architecture
 from datascix.ml.model.supervision.kind.supervion_dependent.training.config import Config
@@ -9,8 +9,6 @@ from datascix.ml.model.validation.validation import Validation
 from mathx.set_nd.decorator.factory.numpied import Numpied as NumpiedSet
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
 from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumpiedPopulation
-from mathx.view.kind.point_cloud.kind.multiple_point_group.multiple_point_grouped import MultiplePointGrouped
-from mathx.view.kind.point_cloud.decorator.lined.group_point_seted.ordered_inter_line_connected import OrderedInterLineConnected
 from mathx.view.kind.point_cloud.point_cloud import PointCloud
 from mathx.view.kind.point_cloud.point.group.group.Group import Group as GroupPairSet
 from mathx.view.kind.point_cloud.point.group.group import Group
@@ -49,19 +47,6 @@ class TrainTestBySlidingWindowSampling(Validation):
         point_cloud._build()
         point_cloud.render()
 
-    def render_line_connected_corresponding_pairs(self):
-        """
-        This only works if the data is 2d or 3d
-        Returns:
-
-        """
-        test_set_targets = Group(self._test_set_targets)
-        test_set_predictions = Group(self._test_set_predictions)
-        test_set_predictions_group_pair_set = GroupPairSet([test_set_predictions])
-
-        line_connected_multi_data_set = OrderedInterLineConnected(
-            MultiplePointGrouped(PointCloud(test_set_targets), test_set_predictions_group_pair_set))
-        line_connected_multi_data_set.show()
 
     @classmethod
     def init_from_partitionaning_ratio(cls, trainer_class: Trainer, architecture: Architecture, trainer_configs: Config,

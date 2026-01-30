@@ -7,9 +7,9 @@ from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.au
 from datascix.ml.model.application.sequence_to_sequence.kind.time_series.kind.auto_regression.vector.predictor import \
     Predictor
 from datascix.ml.model.application.sequence_to_sequence.validation.kind.train_test.train_test_sliding_window_sampling import TrainTestBySlidingWindowSampling
-from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.generator import \
+from mathx.statistic.population.sampling.sampler.sampler import \
     Generator
-from mathx.statistic.population.sampling.kind.countable.finite.members_mentioned.numbered.sequence.sliding_window.sliding_window import \
+from mathx.statistic.population.sampling.sampler.sampler import \
     SlidingWindow
 from mathx.number.kind.real.interval.unit.open_unit_interval import OpenUnitInterval
 from mathx.statistic.population.kind.countable.finite.member_mentioned.numbered.numbered import Numbered as NumpiedPopulation

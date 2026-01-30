@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 
-from datascix.ml.model.application.sequence_to_sequence.predictor import Predictor as SequenceToSequencePredictor
+from datascix.ml.model.application.sequence_to_sequence.predictor.predictor import Predictor as SequenceToSequencePredictor
 from datascix.ml.model.architecture.architecture import Architecture as ModelArchitecture
 import numpy as np
 
