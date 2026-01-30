@@ -27,7 +27,7 @@ class TestTrainTestByPeriodSampling:
         storage.load()
         # removing the time
         one_period_members_count = 24450
-        ram = storage.get_ram()[:4 * 24450, 1:]  # (T, 3)
+        ram = storage.get_ram()[:9 * 24450, 1:]  # (T, 3)
 
         usable_len = (len(ram) // one_period_members_count) * one_period_members_count
         ram = ram[:usable_len]
@@ -37,8 +37,10 @@ class TestTrainTestByPeriodSampling:
         # shape = (partition_count, one_period_members_count, 3)
         partitioned_population = ram.reshape(partition_count, one_period_members_count, ram.shape[1])
         print(partitioned_population[0].shape)
-        three_partitions_concated = np.vstack(
-            [partitioned_population[0], partitioned_population[1], partitioned_population[2]])
+        training_partitions = np.vstack(
+            [partitioned_population[0], partitioned_population[1], partitioned_population[2], partitioned_population[3],
+             partitioned_population[4], partitioned_population[5], partitioned_population[6], partitioned_population[7]])
+        testing_partition = partitioned_population[8]
 
         print("ram.shape:", ram.shape, "ram.nbytes(MB):", ram.nbytes / 1024 / 1024)
         print("partitioned_population.shape:", partitioned_population.shape, "dtype:", partitioned_population.dtype)
@@ -64,12 +66,12 @@ class TestTrainTestByPeriodSampling:
 
         # training config
         trainer_config = TrainerConfig(
-            epochs=10,
+            epochs=20,
             batch_size=8,
             learning_rate=1e-3,
             shuffle=True)
 
-        train_test = TrainTestByPeriods.init_from_one_split(three_partitions_concated, partitioned_population[3],
+        train_test = TrainTestByPeriods.init_from_one_split(training_partitions, testing_partition,
                                                             Trainer, architecture, trainer_config, Predictor,
                                                             sliding_window.get_step())
         train_test.render_euclidean_distance()
